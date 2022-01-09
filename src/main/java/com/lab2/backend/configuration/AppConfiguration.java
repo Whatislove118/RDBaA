@@ -8,10 +8,9 @@ import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class AppConfiguration {
-
     @Bean
     @Scope("prototype")
-    public Book getBook(){
+    public Book getBook() {
         return new Book();
     }
 

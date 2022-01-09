@@ -13,30 +13,29 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/book")
 public class BookController {
-
-
     @Autowired
     private BookRepository bookRepository;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addBook(@RequestBody Book book){
+    public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookRepository.save(book);
         return new ResponseEntity<>("Saved", HttpStatus.CREATED);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Book> searchBook(@RequestParam(required = false) String name, @RequestParam(required = false) String authorName, @RequestParam(required = false) String keywords){
+    public ResponseEntity<Book> searchBook(@RequestParam(required = false) String name, @RequestParam(required = false) String authorName, @RequestParam(required = false) String keywords) {
         ArrayList<Book> book_from_db;
-        if (name != null){
+        if (name != null) {
             book_from_db = bookRepository.findByName(name);
-            return new ResponseEntity(book_from_db, HttpStatus.OK);
-        }else if (authorName != null){
+        } else if (authorName != null) {
             book_from_db = bookRepository.findByAuthorName(authorName);
-            return new ResponseEntity(book_from_db, HttpStatus.OK);
-        }else if(keywords != null){
+        } else if (keywords != null) {
             book_from_db = bookRepository.findByAnnotation(keywords);
-            return new ResponseEntity(book_from_db, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(book_from_db, HttpStatus.OK);
+
+
     }
 }
